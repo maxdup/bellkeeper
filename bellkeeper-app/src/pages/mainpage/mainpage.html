@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button *ngIf="slides.isEnd()" (click)="goToSlide(0)"
+              ion-button icon-left>
+        <ion-icon name="arrow-back"></ion-icon>
+        Back
+      </button>
+    </ion-buttons>
+    <ion-title>BellKeeper</ion-title>
+    <ion-buttons end>
+      <button *ngIf="slides.isBeginning()" (click)="goToSlide(1)"
+              ion-button icon-only>
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-slides id="Slides">
+
+    <ion-slide>
+      <p>"You wish to guard the bell, you do?"</p>
+      <div class="lock-container">
+        <div class="lock-status polling">
+        </div>
+        <button class="lock-button">
+          <ion-icon class="lock-icon" name="lock"></ion-icon>
+        </button>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-label fixed>Network</ion-label>
+      <ion-item>
+        <ion-label fixed>IP</ion-label>
+        <ion-input type="text" value=""></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Passcode</ion-label>
+        <ion-input type="text" value=""></ion-input>
+      </ion-item>
+      <ion-label fixed>Duration</ion-label>
+      <ion-item>
+        <ion-range min="2" max="20" step="1" [(ngModel)]="duration">
+          <ion-label range-right>{{duration}}s</ion-label>
+        </ion-range>
+      </ion-item>
+    </ion-slide>
+
+  </ion-slides>
+
+</ion-content>
