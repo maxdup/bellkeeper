@@ -19,7 +19,9 @@
 
 <ion-content padding>
 
-  <ion-slides id="Slides">
+  <ion-slides id="Slides"
+              (ionSlideDrag)=keyboard.close($event)
+              (ionSlideReachStart)="saveSettings()">
 
     <ion-slide>
       <p>"You wish to guard the bell, you do?"</p>
