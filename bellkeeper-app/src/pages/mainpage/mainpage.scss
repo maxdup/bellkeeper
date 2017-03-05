@@ -16,6 +16,8 @@ page-mainpage {
         bottom: 0;
         right: 0;
         left: 0;
+        background: #ddd;
+
         &.polling {
             background: #aaa;
             background: -moz-linear-gradient(top, #ffffff 70%, #c9c9c9 85%);
@@ -45,6 +47,9 @@ page-mainpage {
         }
         &.offline {
             background: #ff3060;
+        }
+        &.denied {
+            background: #ffdd50;
         }
     }
     .lock-button {

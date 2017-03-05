@@ -24,9 +24,9 @@
     <ion-slide>
       <p>"You wish to guard the bell, you do?"</p>
       <div class="lock-container">
-        <div class="lock-status polling">
+        <div class="lock-status" [ngClass]="status">
         </div>
-        <button class="lock-button">
+        <button class="lock-button" (click)="query()">
           <ion-icon class="lock-icon" name="lock"></ion-icon>
         </button>
       </div>
@@ -36,11 +36,11 @@
       <ion-label fixed>Network</ion-label>
       <ion-item>
         <ion-label fixed>IP</ion-label>
-        <ion-input type="text" value=""></ion-input>
+        <ion-input type="text" [(ngModel)]="ip"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label fixed>Passcode</ion-label>
-        <ion-input type="text" value=""></ion-input>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
       </ion-item>
       <ion-label fixed>Duration</ion-label>
       <ion-item>
