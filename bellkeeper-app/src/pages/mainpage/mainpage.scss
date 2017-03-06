@@ -15,16 +15,20 @@ $yellow-alt: #ffaa55;
 }
 
 page-mainpage {
-    ion-content, .content-md{
-        .denied {
+    .swiper-slide {
+        align-items: initial;
+        margin-top: 15%;
+    }
+    ion-content, .content-md {
+        &.locked {
             background: linear-gradient(310deg, #ff6080, #ffccc8);
             background-size: 400% 400%;
-            -webkit-animation: pulse 1s ease infinite;
+            -webkit-animation: pulse 0.5s ease infinite;
             -moz-animation: pulse 0.5s ease infinite;
             -o-animation: pulse 0.5s ease infinite;
             animation: pulse 0.5s ease infinite;
         }
-        .unlocked {
+        &.unlocked {
             background: linear-gradient(310deg, #70ff88, #70ffdd);
             background-size: 400% 400%;
 
@@ -42,7 +46,7 @@ page-mainpage {
         vertical-align: middle;
         padding: 15px;
     }
-    .lock-status {
+    .lock-status-ring {
         height: 100%;
         width: 100%;
         border-radius: 50%;
@@ -83,6 +87,7 @@ page-mainpage {
             @include gradient($yellow, 15%, $yellow-alt, 90%);
         }
     }
+
     .lock-button {
         height: 90%;
         width: 90%;
@@ -104,6 +109,16 @@ page-mainpage {
             background: #ddd;
         }
     }
+    .lock-message {
+        min-height: 60px;
+        font-size: 50px;
+    }
+    .lock-status {
+        color: #555;
+        font-weight: bold;
+        min-height: 30px;
+    }
+
     @-webkit-keyframes spin {
         from {
             -webkit-transform:rotate(0deg);

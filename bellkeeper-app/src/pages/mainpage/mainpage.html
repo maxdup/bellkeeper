@@ -17,20 +17,33 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [ngClass]="lock">
 
   <ion-slides id="Slides"
               (ionSlideDrag)=keyboard.close($event)
               (ionSlideReachStart)="saveSettings()">
 
     <ion-slide>
-      <p>"You wish to guard the bell, you do?"</p>
-      <div class="lock-container">
-        <div class="lock-status" [ngClass]="status">
+      <div class="lock-screen">
+        <div class="lock-message">
+          <div *ngIf="lock == 'locked'">Error</div>
+          <div *ngIf="lock == 'unlocked'">Unlocked!</div>
         </div>
-        <button class="lock-button" (click)="query()">
-          <ion-icon class="lock-icon" name="lock"></ion-icon>
-        </button>
+
+        <p>"Technology is the key to success"</p>
+        <div class="lock-container">
+          <div class="lock-status-ring" [ngClass]="status">
+          </div>
+          <button class="lock-button" (click)="query()">
+            <ion-icon class="lock-icon" name="lock"></ion-icon>
+          </button>
+        </div>
+
+        <div class="lock-status">
+          <p *ngIf="status == 'offline'">Lock is offline</p>
+          <p *ngIf="status == 'online'">Lock is online</p>
+          <p *ngIf="status == 'denied'">Password was denied</p>
+        </div>
       </div>
     </ion-slide>
 
