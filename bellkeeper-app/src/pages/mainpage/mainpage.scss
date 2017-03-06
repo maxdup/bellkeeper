@@ -1,4 +1,39 @@
+$green: #10ee80;
+$green-alt: #10FFaa;
+$red: #ff3060;
+$red-alt: #cc3020;
+$yellow: #eeee30;
+$yellow-alt: #ffaa55;
+
+@mixin gradient($from-color, $from-key, $to-color, $to-key) {
+    background-color: mix($from-color, $to-color); /* Fallback */
+    background-image: -webkit-linear-gradient(top, $from-color $from-key, $to-color $to-key);
+    background-image:    -moz-linear-gradient(top, $from-color $from-key, $to-color $to-key);
+    background-image:     -ms-linear-gradient(top, $from-color $from-key, $to-color $to-key);
+    background-image:      -o-linear-gradient(top, $from-color $from-key, $to-color $to-key);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$from-color}', EndColorStr='#{$to-color}')";
+}
+
 page-mainpage {
+    ion-content, .content-md{
+        .denied {
+            background: linear-gradient(310deg, #ff6080, #ffccc8);
+            background-size: 400% 400%;
+            -webkit-animation: pulse 1s ease infinite;
+            -moz-animation: pulse 0.5s ease infinite;
+            -o-animation: pulse 0.5s ease infinite;
+            animation: pulse 0.5s ease infinite;
+        }
+        .unlocked {
+            background: linear-gradient(310deg, #70ff88, #70ffdd);
+            background-size: 400% 400%;
+
+            -webkit-animation: pulse 2s ease infinite;
+            -moz-animation: pulse 2s ease infinite;
+            -o-animation: pulse 2s ease infinite;
+            animation: pulse 2s ease infinite;
+        }
+    }
     .lock-container {
         display:inline-block;
         position: relative;
@@ -19,11 +54,7 @@ page-mainpage {
         background: #ddd;
 
         &.polling {
-            background: #aaa;
-            background: -moz-linear-gradient(top, #ffffff 70%, #c9c9c9 85%);
-            background: -webkit-linear-gradient(top, #ffffff 70%,#c9c9c9 85%);
-            background: linear-gradient(to bottom, #ffffff 70%,#c9c9c9 85%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c9c9c9',GradientType=0 );
+            @include gradient(#ffffff, 70%, #c9c9c9, 85%);
 
             -webkit-animation-name: spin;
             -webkit-animation-duration: 4000ms;
@@ -43,13 +74,13 @@ page-mainpage {
             animation-timing-function: linear;
         }
         &.online {
-            background: #10FF80;
+            @include gradient($green, 15%, $green-alt, 70%);
         }
         &.offline {
-            background: #ff3060;
+            @include gradient($red, 15%, $red-alt, 70%);
         }
         &.denied {
-            background: #ffdd50;
+            @include gradient($yellow, 15%, $yellow-alt, 90%);
         }
     }
     .lock-button {
@@ -63,8 +94,14 @@ page-mainpage {
         right: 5%;
         left: 5%;
 
-        .lock-icon{
+        .lock-icon {
             font-size: 150px;
+        }
+        &:hover {
+            background: #eee;
+        }
+        &:active {
+            background: #ddd;
         }
     }
     @-webkit-keyframes spin {
@@ -74,5 +111,26 @@ page-mainpage {
         to {
             -webkit-transform:rotate(360deg);
         }
+    }
+
+    @-webkit-keyframes pulse {
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+    }
+    @-moz-keyframes pulse {
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+    }
+    @-o-keyframes pulse {
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+    }
+    @keyframes pulse {
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
     }
 }
