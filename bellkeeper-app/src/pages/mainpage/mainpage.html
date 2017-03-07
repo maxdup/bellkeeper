@@ -32,8 +32,9 @@
 
         <p>"Technology is the key to success"</p>
         <div class="lock-container">
-          <div class="lock-status-ring" [ngClass]="status">
-          </div>
+          <button class="lock-status-ring" [ngClass]="status">
+            <ion-icon class="lock-icon" name="lock"></ion-icon>
+          </button>
           <button class="lock-button" (click)="query()">
             <ion-icon class="lock-icon" name="lock"></ion-icon>
           </button>
