@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides, Keyboard } from 'ionic-angular';
 import { LockService } from '../../app/lock.service'
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'page-mainpage',
@@ -26,7 +26,6 @@ export class MainPage {
       this.lock = "";
       this.status = "polling";
       this.query();
-      console.log(this);
   }
   goToSlide(id : number){
     this.slides.slideTo(id);
@@ -38,7 +37,7 @@ export class MainPage {
     this.keyboard.close();
   }
 
-  query(){
+  query() {
     if (this.status != "online" && this.status != "denied"){
       this.status = "polling";
       this.lockService.poll(this.ip).subscribe(
@@ -48,7 +47,6 @@ export class MainPage {
     }
     else {
       if (this.lock == "") {
-        console.log("queried");
         this.lockService.unlock(this.ip, this.password).subscribe(
           data => this.unlockHandler(data.status),
           error => this.unlockHandler(error.status)
@@ -58,8 +56,6 @@ export class MainPage {
   }
 
   updateStatus(status : number) {
-    console.log("status", status);
-
     if ( status == 204){
       this.status = "online";
     }
@@ -97,11 +93,21 @@ export class MainPage {
   relock(){
     this.lock = "";
   }
-
   saveSettings(){
     let storage = window.localStorage;
-    storage.setItem('ip', this.ip);
-    storage.setItem('password', this.password);
-    storage.setItem('duration', ""+this.duration);
+    if (storage.getItem('password') != this.password){
+      storage.setItem('password', this.password);
+      if (this.status == "denied"){
+        this.status = "online";
+      }
+    }
+    if (storage.getItem('ip') != this.ip){
+      storage.setItem('ip', this.ip);
+      this.status = "polling";
+      this.query();
+    }
+    if (+storage.getItem('duration') != this.duration){
+      storage.setItem('duration', ""+this.duration);
+    }
   }
 }

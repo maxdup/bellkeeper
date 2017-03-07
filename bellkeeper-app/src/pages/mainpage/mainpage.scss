@@ -5,13 +5,21 @@ $red-alt: #cc3020;
 $yellow: #eeee30;
 $yellow-alt: #ffaa55;
 
-@mixin gradient($from-color, $from-key, $to-color, $to-key) {
-    background-color: mix($from-color, $to-color); /* Fallback */
-    background-image: -webkit-linear-gradient(top, $from-color $from-key, $to-color $to-key);
-    background-image:    -moz-linear-gradient(top, $from-color $from-key, $to-color $to-key);
-    background-image:     -ms-linear-gradient(top, $from-color $from-key, $to-color $to-key);
-    background-image:      -o-linear-gradient(top, $from-color $from-key, $to-color $to-key);
+@mixin gradient($from-color, $to-color, $from-key:0%, $to-key:100%, $angle:180deg) {
+    background: mix($from-color, $to-color); /* Fallback */
+    background: -webkit-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:    -moz-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:     -ms-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:      -o-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:         linear-gradient($angle, $from-color $from-key, $to-color $to-key);
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$from-color}', EndColorStr='#{$to-color}')";
+}
+
+@mixin anim($animation, $length, $curve, $cycle) {
+    -webkit-animation: $animation $length $curve $cycle;
+    -moz-animation: $animation $length $curve $cycle;
+    -o-animation: $animation $length $curve $cycle;
+    animation: $animation $length $curve $cycle;
 }
 
 page-mainpage {
@@ -21,21 +29,14 @@ page-mainpage {
     }
     ion-content, .content-md {
         &.locked {
-            background: linear-gradient(310deg, #ff6080, #ffccc8);
+            @include gradient(#ff6080, #ffccc8, 0%, 100%, 310deg);
             background-size: 400% 400%;
-            -webkit-animation: pulse 0.5s ease infinite;
-            -moz-animation: pulse 0.5s ease infinite;
-            -o-animation: pulse 0.5s ease infinite;
-            animation: pulse 0.5s ease infinite;
+            @include anim(pulse, 0.5s, ease, infinite);
         }
         &.unlocked {
-            background: linear-gradient(310deg, #70ff88, #70ffdd);
+            @include gradient(#70ff88, #70ffdd, 0%, 100%, 310deg);
             background-size: 400% 400%;
-
-            -webkit-animation: pulse 2s ease infinite;
-            -moz-animation: pulse 2s ease infinite;
-            -o-animation: pulse 2s ease infinite;
-            animation: pulse 2s ease infinite;
+            @include anim(pulse, 2s, ease, infinite);
         }
     }
     .lock-container {
@@ -58,33 +59,17 @@ page-mainpage {
         background: #ddd;
 
         &.polling {
-            @include gradient(#ffffff, 70%, #c9c9c9, 85%);
-
-            -webkit-animation-name: spin;
-            -webkit-animation-duration: 4000ms;
-            -webkit-animation-iteration-count: infinite;
-            -webkit-animation-timing-function: linear;
-            -moz-animation-name: spin;
-            -moz-animation-duration: 4000ms;
-            -moz-animation-iteration-count: infinite;
-            -moz-animation-timing-function: linear;
-            -ms-animation-name: spin;
-            -ms-animation-duration: 4000ms;
-            -ms-animation-iteration-count: infinite;
-            -ms-animation-timing-function: linear;
-            animation-name: spin;
-            animation-duration: 4000ms;
-            animation-iteration-count: infinite;
-            animation-timing-function: linear;
+            @include gradient(#ffffff, #c9c9c9, 70%, 85%);
+            @include anim(spin, 3s, linear, infinite);
         }
         &.online {
-            @include gradient($green, 15%, $green-alt, 70%);
+            @include gradient($green, $green-alt, 15%, 70%);
         }
         &.offline {
-            @include gradient($red, 15%, $red-alt, 70%);
+            @include gradient($red, $red-alt, 15%, 70%);
         }
         &.denied {
-            @include gradient($yellow, 15%, $yellow-alt, 90%);
+            @include gradient($yellow, $yellow-alt, 15%, 90%);
         }
     }
 
@@ -120,12 +105,8 @@ page-mainpage {
     }
 
     @-webkit-keyframes spin {
-        from {
-            -webkit-transform:rotate(0deg);
-        }
-        to {
-            -webkit-transform:rotate(360deg);
-        }
+        from { -webkit-transform:rotate(0deg); }
+        to { -webkit-transform:rotate(360deg); }
     }
 
     @-webkit-keyframes pulse {

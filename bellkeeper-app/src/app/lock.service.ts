@@ -12,6 +12,7 @@ export class LockService {
 
   poll(ip : string) {
     return this.http.get('http://' + ip + '/poll/')
+      .retryWhen(error => error.delay(500))
       .timeout(3000);
   }
   unlock(ip : string, password : string) {
