@@ -10,21 +10,20 @@ password = "patate"
 @main.route('/', methods=['POST'])
 def index():
     def lock():
-        call(["gpio", "-g", "write", "18", "0"])
+        call(["gpio", "-g", "write", "14", "1"])
 
     if request.form.get("password") == password:
-        call(["gpio", "-g", "mode", "18", "out"])
+        call(["gpio", "-g", "mode", "14", "out"])
         if request.form.get("password") == password:
-            call(["gpio", "-g", "write", "18", "1"])
+            call(["gpio", "-g", "write", "14", "0"])
             delay = 3
-
             if request.form.get("duration"):
                 try:
                     delay = max(1, min(20, int(request.form.get("duration"))))
                 except:
                     pass
 
-        threading.Timer(delay, lock).start()
+            threading.Timer(delay, lock).start()
 
         return ('', 200)
     else:
