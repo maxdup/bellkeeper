@@ -20,9 +20,9 @@ export class MainPage {
   constructor(public navCtrl: NavController,
     private lockService: LockService, public keyboard: Keyboard) {
       let storage = window.localStorage;
-      this.ip = storage.getItem('ip')
-      this.password = storage.getItem('password')
-      this.duration = +storage.getItem('duration')
+      this.ip = storage.getItem('ip');
+      this.password = storage.getItem('password');
+      this.duration = +storage.getItem('duration') || 2;
       this.lock = "";
       this.status = "polling";
       this.query();
@@ -47,7 +47,7 @@ export class MainPage {
     }
     else {
       if (this.lock == "") {
-        this.lockService.unlock(this.ip, this.password).subscribe(
+        this.lockService.unlock(this.ip, this.password, this.duration).subscribe(
           data => this.unlockHandler(data.status),
           error => this.unlockHandler(error.status)
         )

@@ -18,7 +18,7 @@ export class LockService {
   unlock(ip : string, password : string, duration : number) {
     let data = new URLSearchParams();
     data.append('password', password);
-    data.append('duration', duration);
+    data.append('duration', ""+duration);
     return this.http.post('http://' + ip + '/', data)
       .timeout(3000);
   }
