@@ -1,6 +1,8 @@
 bellkeeper-app/platforms/*
 bellkeeper-app/plugins/*
 
+config.py
+
 # Emulator logs
 platforms/ios/cordova/console.log
 #emacs
