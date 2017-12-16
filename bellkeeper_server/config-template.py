@@ -8,3 +8,10 @@ post_data = {'login_name': '',
 
 dwellers = [{'name': 'person',
              'mac': '00:00:00:00:00:00'}]
+
+password = ''
+
+#twilio
+sender_sms = ''
+ACCOUNT_SID = ''
+AUTH_TOKEN = ''

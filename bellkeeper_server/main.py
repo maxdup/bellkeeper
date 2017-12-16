@@ -5,23 +5,24 @@ import threading
 
 import requests
 from lxml import etree
-from config import post_data, dwellers
-
-#from bs4 import BeautifulSoup
+from twilio.rest import Client as twilioClient
+from config import *
 
 main = Blueprint('main', __name__)
 
-password = "patate"
+def unlock():
+    call(["gpio", "-g", "write", "14", "0"])
+
+def lock():
+    call(["gpio", "-g", "write", "14", "1"])
 
 @main.route('/', methods=['POST'])
 def index():
-    def lock():
-        call(["gpio", "-g", "write", "14", "1"])
 
     if request.form.get("password") == password:
         call(["gpio", "-g", "mode", "14", "out"])
         if request.form.get("password") == password:
-            call(["gpio", "-g", "write", "14", "0"])
+            unlock()
             delay = 3
             if request.form.get("duration"):
                 try:
@@ -36,7 +37,7 @@ def index():
         return ('', 403)
 
 
-def findDevices():
+def findHomies():
     # is based on the d-link DIR-655 router
     r = requests.post('http://192.168.0.1/login.cgi', data=post_data)
     r = requests.get('http://192.168.0.1/device.xml=wireless_list')
@@ -51,8 +52,8 @@ def findDevices():
     return homies
 
 @main.route('/whosthere', methods=['GET'])
-def whosthere():
-    homies = findDevices()
+def whosThere():
+    homies = findHomies()
     response = []
     for homie in homies:
         response.append(homie['name'])
@@ -65,3 +66,37 @@ def whosthere():
 def poll():
     return ('', 204)
 
+
+@main.route('/sms', methods=['POST', 'GET'])
+def sms():
+    if not (sender_sms and ACCOUNT_SID and AUTH_TOKEN):
+        return ('', 403)
+    elif 'Body' not in request.form or 'From' not in request.form:
+        return ('', 406)
+
+    elif request.form['From'] not in whitelist:
+        client = twilioClient(ACCOUNT_SID, AUTH_TOKEN)
+        result = client.messages.create(
+            to=int(request.form['From']),
+            from_=sender_sms,
+            body='forbidden')
+
+    elif request.form['Body'].lower() == 'homies':
+        homies = findHomies()
+
+        message = ''
+        for homie in homies:
+            message += homie['name'] + ', '
+        message = message[:-2]
+
+        client = twilioClient(ACCOUNT_SID, AUTH_TOKEN)
+        result = client.messages.create(
+            to=int(request.form['From']),
+            from_=sender_sms,
+            body=message)
+
+    elif request.form['Body'].lower == 'unlock':
+        unlock()
+        threading.Timer(15, lock).start()
+
+    return ('', 200)
