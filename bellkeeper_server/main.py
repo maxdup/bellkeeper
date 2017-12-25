@@ -3,8 +3,7 @@ import json
 from subprocess import call
 import threading
 
-import requests
-from lxml import etree
+import os
 from twilio.rest import Client as twilioClient
 from config import *
 
@@ -38,17 +37,15 @@ def index():
 
 
 def findHomies():
-    # is based on the d-link DIR-655 router
-    r = requests.post('http://192.168.0.1/login.cgi', data=post_data)
-    r = requests.get('http://192.168.0.1/device.xml=wireless_list')
-    tree = etree.fromstring(r.text.encode('utf-8'))
-
     homies = []
     for dweller in dwellers:
-        for device in tree[0].findall('mac'):
-            if device.text == dweller['mac']:
-                homies.append(dweller)
-    print(homies)
+        if dweller['type'] == 'apple':
+            response = os.system(
+                "hping3 -2 -c 3 -p 5353 " + dweller['ip'])
+    for dweller in dwellers:
+        response = os.system("ping -c 1 " + dweller['ip'])
+        if response == 0:
+            homies.append(dweller)
     return homies
 
 @main.route('/whosthere', methods=['GET'])
@@ -74,29 +71,41 @@ def sms():
     elif 'Body' not in request.form or 'From' not in request.form:
         return ('', 406)
 
-    elif request.form['From'] not in whitelist:
+    elif not next(x for x in dwellers if x['phone'] == request.form['From']):
         client = twilioClient(ACCOUNT_SID, AUTH_TOKEN)
         result = client.messages.create(
             to=int(request.form['From']),
             from_=sender_sms,
             body='forbidden')
 
+    elif request.form['Body'].lower() == 'help':
+        message = 'commands:\n'\
+                  'help - sends this help message\n'\
+                  'unlock - unlocks the door for 15 seconds\n'\
+                  'homies - lists roommates currently at home'
+        sms_response(message, request.form['From'])
+
     elif request.form['Body'].lower() == 'homies':
         homies = findHomies()
 
         message = ''
-        for homie in homies:
-            message += homie['name'] + ', '
-        message = message[:-2]
+        if homies:
+            for homie in homies:
+                message += homie['name'] + ', '
+            message = message[:-2]
+        else:
+            message = 'no one is home'
+        sms_response(message, request.form['From'])
 
-        client = twilioClient(ACCOUNT_SID, AUTH_TOKEN)
-        result = client.messages.create(
-            to=int(request.form['From']),
-            from_=sender_sms,
-            body=message)
 
     elif request.form['Body'].lower == 'unlock':
         unlock()
         threading.Timer(15, lock).start()
 
     return ('', 200)
+
+def sms_response(message, to):
+    client = twilioClient(ACCOUNT_SID, AUTH_TOKEN)
+    result = client.messages.create(to=int(to),
+                                    from_=sender_sms,
+                                    body=message)
