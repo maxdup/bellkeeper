@@ -35,7 +35,6 @@ def index():
     else:
         return ('', 403)
 
-
 def findHomies():
     homies = []
     for dweller in dwellers:
@@ -78,13 +77,6 @@ def sms():
             from_=sender_sms,
             body='forbidden')
 
-    elif request.form['Body'].lower() == 'help':
-        message = 'commands:\n'\
-                  'help - sends this help message\n'\
-                  'unlock - unlocks the door for 15 seconds\n'\
-                  'homies - lists roommates currently at home'
-        sms_response(message, request.form['From'])
-
     elif request.form['Body'].lower() == 'homies':
         homies = findHomies()
 
@@ -98,9 +90,17 @@ def sms():
         sms_response(message, request.form['From'])
 
 
-    elif request.form['Body'].lower == 'unlock':
+    elif request.form['Body'].lower() == 'unlock':
         unlock()
         threading.Timer(15, lock).start()
+
+    else:
+        message = 'The Commands are:\n'\
+                  'commands - sends this help message\n'\
+                  'unlock - unlocks the door for 15 seconds\n'\
+                  'homies - lists roommates currently at home'
+        sms_response(message, request.form['From'])
+
 
     return ('', 200)
 
