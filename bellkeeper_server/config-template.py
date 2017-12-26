@@ -1,13 +1,8 @@
-post_data = {'login_name': '',
-             'login_pass': '',
-             'graph_id': 'bf331',
-             'alert_id': 1,
-             'log_pass': '',
-             'html_response_page': 'login.asp',
-             'login': 'Log+In'}
-
-dwellers = [{'name': 'person',
-             'mac': '00:00:00:00:00:00'}]
+dwellers = [{'name': 'persib'
+             'mac': '00:00:00:00:00:00',
+             'ip': '0.0.0.0',
+             'phone': '+15140000000',
+             'type': 'android'}]
 
 password = ''
 
