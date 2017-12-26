@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 import json
-from subprocess import call
+from subprocess import call, Popen
+
 import threading
 
 import os
@@ -37,14 +38,20 @@ def index():
 
 def findHomies():
     homies = []
+    ps = []
     for dweller in dwellers:
         if dweller['type'] == 'apple':
-            response = os.system(
-                "hping3 -2 -c 3 -p 5353 " + dweller['ip'])
+            p = Popen("sudo hping3 -2 -c 3 -p 5353 " + dweller['ip'], shell=True)
+            ps.append(p)
+    for p in ps:
+        p.wait()
+
     for dweller in dwellers:
-        response = os.system("ping -c 1 " + dweller['ip'])
-        if response == 0:
+        p = Popen("ping -c 1 " + dweller['ip'], shell=True)
+        p.wait()
+        if p.returncode == 0:
             homies.append(dweller)
+
     return homies
 
 @main.route('/whosthere', methods=['GET'])
@@ -97,8 +104,7 @@ def sms():
     else:
         message = 'The Commands are:\n'\
                   'commands - sends this help message\n'\
-                  'unlock - unlocks the door for 15 seconds\n'\
-                  'homies - lists roommates currently at home'
+                  'unlock - unlocks the door for 15 seconds'
         sms_response(message, request.form['From'])
 
 
