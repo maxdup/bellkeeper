@@ -1,0 +1,65 @@
+<ion-view view-title="BellKeeper">
+  <ion-content class="{{lock}}">
+    <ion-slides  options="options" slider="data.slider">
+
+      <!-- Main page -->
+      <ion-slide-page>
+        <div id="lock-screen">
+          <div class="lock-message">
+            <div ng-if="lock == 'locked'">Error</div>
+            <div ng-if="lock == 'unlocked'">Unlocked!</div>
+          </div>
+
+          <p>"Technology is the key to success"</p>
+          <div class="lock-container">
+            <div class="lock-status-ring {{status}}">
+            </div>
+            <button class="lock-button" ng-click="query()">
+              <ion-icon class="icon ion-locked" name="lock"
+                        ng-class="{'ion-locked': lock != 'unlocked',
+                                  'ion-unlocked': lock == 'unlocked'}"></ion-icon>
+            </button>
+          </div>
+
+          <div class="lock-status">
+            <p ng-if="status == 'offline'">Lock is offline</p>
+            <p ng-if="status == 'polling'">Searching lock...</p>
+            <p ng-if="status == 'online'">Lock is online</p>
+            <p ng-if="status == 'denied'">Password was denied</p>
+          </div>
+        </div>
+      </ion-slide-page>
+
+      <!-- Settings page -->
+      <ion-slide-page>
+        <h1 style="padding-left: 15px; padding-top: 10vh">Settings</h1>
+
+        <div class="card">
+          <div class="item item-divider">
+            Network
+          </div>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">IP Address</span>
+            <input type="text" placeholder="IP Address"
+                   ng-model="form_value.ip">
+          </label>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Passcode</span>
+            <input type="password" placeholder="Passcode"
+                   ng-model="form_value.password">
+          </label>
+
+          <div class="item item-divider ">
+            Duration
+            <span style="float: right">{{form_value.duration}}s</span>
+          </div>
+          <div class="item range range-positive">
+            <input type="range" min="2" max="20" value="5"
+                   ng-model="form_value.duration">
+          </div>
+        </div>
+      </ion-slide-page>
+
+    </ion-slides>
+  </ion-content>
+</ion-view>

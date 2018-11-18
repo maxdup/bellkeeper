@@ -1,5 +1,7 @@
 bellkeeper-app/platforms/*
 bellkeeper-app/plugins/*
+bellkeeper_app/platforms/*
+bellkeeper_app/plugins/*
 
 config.py
 
