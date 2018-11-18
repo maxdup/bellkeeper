@@ -52,19 +52,17 @@ lorStr='#{$to-color}')";
     border-radius: $value;
 }
 ion-content {
+    display: block;
+    height: 100%;
     &.locked {
-        .scroll {
         @include gradient(#ff6080, #ffccc8, 0%, 100%, 310deg);
         background-size: 400% 400%;
         @include anim(pulse, 0.5s, ease, infinite);
-        }
     }
     &.unlocked {
-        .scroll {
         @include gradient(#70ff88, #70ffdd, 0%, 100%, 310deg);
         background-size: 400% 400%;
         @include anim(pulse, 2s, ease, infinite);
-        }
     }
     @-webkit-keyframes pulse {
         0%{background-position:0% 50%}

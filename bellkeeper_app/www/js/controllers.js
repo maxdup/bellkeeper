@@ -85,5 +85,6 @@ angular.module('starter.controllers', [])
         }
       }
     }
+    $scope.query();
   })
 
