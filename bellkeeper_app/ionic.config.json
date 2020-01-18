@@ -1,6 +1,7 @@
 {
   "name": "bellkeeper_app",
-  "app_id": "",
+  "integrations": {},
+  "type": "angular",
   "gulpStartupTasks": [
     "sass",
     "watch"
