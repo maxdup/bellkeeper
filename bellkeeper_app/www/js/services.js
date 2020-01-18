@@ -6,24 +6,14 @@ angular.module('starter.services', [])
                      method: "GET"});
     }
     function unlock(ip, password, duration){
-      return $http({ url: 'http://'+ ip + '/',
-                     method: 'POST',
-                     headers : { 'Content-Type': undefined },
-                     data    : { password: password,
-                                 duration: duration },
-                     transformRequest: function (data, headersGetter) {
-                       var formData = new FormData();
-                       angular.forEach(data, function (value, key) {
-                         formData.append(key, value);
-                       });
-                       var headers = headersGetter();
-                       delete headers['Content-Type'];
-                       return formData;
-                     }
-                   });
+      var data = new FormData();
+      data.append('password', password);
+      data.append('duration', duration);
+      return $http.post('http://'+ ip + '/', data, {
+        headers : { 'Content-Type': undefined }});
     }
     return {
       poll: poll,
       unlock: unlock
-  };
-}]);
+    };
+  }]);
