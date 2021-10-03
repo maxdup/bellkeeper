@@ -6,7 +6,7 @@ import threading
 import os
 from config import passwords
 
-main = Blueprint('main', __name__)
+bpkeeper = Blueprint('main', __name__)
 
 
 def unlock():
@@ -17,7 +17,7 @@ def lock():
     call(["gpio", "-g", "write", "14", "1"])
 
 
-@main.route('/', methods=['POST'])
+@bpkeeper.route('/', methods=['POST'])
 def index():
 
     if request.form.get("password") in passwords:
@@ -35,6 +35,6 @@ def index():
         return ('', 403)
 
 
-@main.route('/poll/', methods=['GET'])
+@bpkeeper.route('/poll/', methods=['GET'])
 def poll():
     return ('', 204)
