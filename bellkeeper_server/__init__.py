@@ -1,10 +1,10 @@
 import os
 from flask import Flask, Config
 from flask_cors import CORS
-from bellkeeper import bpkeeper
+from bellkeeper_server.bellkeeper import bpkeeper
 
 configuration = Config('/')
-configuration.from_object('config')
+configuration.from_object('bellkeeper_server.config')
 
 
 def create_app():

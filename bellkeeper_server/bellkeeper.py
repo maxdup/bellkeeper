@@ -1,27 +1,29 @@
 from flask import Blueprint, request
-from subprocess import call
-
 import threading
-
-import os
-from config import passwords
+import RPi.GPIO as GPIO
+from bellkeeper_server.config import passwords
 
 bpkeeper = Blueprint('main', __name__)
 
 
+SIGNAL = 14
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(SIGNAL, GPIO.OUT)
+
 def unlock():
-    call(["gpio", "-g", "write", "14", "0"])
+    GPIO.output(SIGNAL, GPIO.HIGH)
+    #call(["gpio", "-g", "write", "14", "0"])
 
 
 def lock():
-    call(["gpio", "-g", "write", "14", "1"])
+    GPIO.output(SIGNAL, GPIO.LOW)
+    #call(["gpio", "-g", "write", "14", "1"])
 
 
 @bpkeeper.route('/', methods=['POST'])
 def index():
 
     if request.form.get("password") in passwords:
-        call(["gpio", "-g", "mode", "14", "out"])
         unlock()
         delay = 3
         if request.form.get("duration"):
