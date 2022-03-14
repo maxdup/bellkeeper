@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Bellkeeper
+    </ion-title>
+
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openSettings()">
+        <ion-icon name="cog" slot="end"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scroll="false">
+
+  <div id="lock-screen">
+    <div class="lock-message">
+      <div *ngIf="locked == 'locked'">
+        Error
+      </div>
+      <div *ngIf="locked == 'unlocked'">
+        Unlocked!
+      </div>
+    </div>
+
+    <p>"Technology is the key to success"</p>
+    <div class="lock-container">
+      <div class="lock-status-ring" [ngClass]="status"></div>
+      <button class="lock-button" (click)="query()">
+        <ion-icon name="lock-closed-outline" *ngIf="locked != 'unlocked'"></ion-icon>
+        <ion-icon name="lock-open-outline" *ngIf="locked == 'unlocked'"></ion-icon>
+      </button>
+    </div>
+
+    <div class="lock-status">
+      <p *ngIf="status == 'offline'">Lock is offline</p>
+      <p *ngIf="status == 'polling'">Searching lock...</p>
+      <p *ngIf="status == 'online'">Lock is online</p>
+      <p *ngIf="status == 'denied'">Password was denied</p>
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,36 @@
+<ion-header translucent >
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content scroll="false">
+
+  <div id="settings-page">
+    <h1>Settings</h1>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">IP Address</ion-label>
+        <ion-input [(ngModel)]="settings.ip" type="text"
+                   placeholder="127.0.0.1"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input [(ngModel)]="settings.password" type="password"
+                   placeholder="••••••••"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked" class="item-has-focus">Duration</ion-label>
+        <ion-range [(ngModel)]="settings.duration" min="1" max="60" color="secondary">
+          <ion-label slot="end">{{settings.duration}}s</ion-label>
+        </ion-range>
+      </ion-item>
+
+    </ion-list>
+  </div>
+
+</ion-content>

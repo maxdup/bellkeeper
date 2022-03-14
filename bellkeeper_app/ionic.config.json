@@ -1,14 +1,7 @@
 {
   "name": "bellkeeper_app",
-  "integrations": {},
-  "type": "angular",
-  "gulpStartupTasks": [
-    "sass",
-    "watch"
-  ],
-  "watchPatterns": [
-    "www/**/*",
-    "!www/lib/**/*",
-    "!www/**/*.map"
-  ]
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
 }

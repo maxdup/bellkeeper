@@ -1,0 +1,163 @@
+ion-slides {
+    height: 100%;
+    width: 100%;
+}
+#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+$green: #10ee80;
+$green-alt: #10FFaa;
+$red: #ff3060;
+$red-alt: #cc3020;
+$yellow: #eeee30;
+$yellow-alt: #ffaa55;
+
+@mixin border-radius($value){
+    -webkit-border-radius: $value;
+    -moz-border-radius: $value;
+    border-radius: $value;
+}
+@mixin anim($animation, $length, $curve, $cycle) {
+    -webkit-animation: $animation $length $curve $cycle;
+    -moz-animation: $animation $length $curve $cycle;
+    -o-animation: $animation $length $curve $cycle;
+    animation: $animation $length $curve $cycle;
+}
+@mixin gradient($from-color, $to-color, $from-key:0%, $to-key:100%, $angle:180deg) {
+    background: mix($from-color, $to-color); /* Fallback */
+    background: -webkit-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:    -moz-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:     -ms-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:      -o-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    background:         linear-gradient($angle, $from-color $from-key, $to-color $to-key);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$from-color}', EndColorStr='#{$to-color}')";
+}
+ion-content {
+    display: block;
+    height: 100%;
+    &.locked {
+        @include gradient(#ff6080, #ffccc8, 0%, 100%, 310deg);
+        background-size: 400% 400%;
+        @include anim(pulse, 0.5s, ease, infinite);
+    }
+    &.unlocked {
+        @include gradient(#70ff88, #70ffdd, 0%, 100%, 310deg);
+        background-size: 400% 400%;
+        @include anim(pulse, 2s, ease, infinite);
+    }
+}
+@keyframes pulse {
+    0%{ background-position:0% 50% }
+    50%{ background-position:100% 50% }
+    100%{ background-position:0% 50% }
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(359deg);
+    }
+}
+
+#lock-screen {
+    margin-top: 15vh;
+    text-align: center;
+
+    .lock-message {
+        min-height: 70px;
+        font-size: 50px;
+    }
+    .lock-container {
+	    display:inline-block;
+        position: relative;
+        height: 40vh;
+	    width: 40vh;
+	    vertical-align: middle;
+	    padding: 15px;
+	    button {
+	        border-width: 0;
+        }
+
+
+        .lock-status-ring {
+            height: 90%;
+            width: 90%;
+            @include border-radius(50%);
+            position: absolute;
+            top: 5%;
+            bottom: 5%;
+            right: 5%;
+            left: 5%;
+            background: #ddd;
+
+
+	        &.polling {
+                @include gradient(#ffffff, #c9c9c9, 70%, 85%);
+                animation: rotation 3s infinite linear;
+            }
+            &.online {
+                @include gradient($green, $green-alt, 15%, 70%);
+            }
+            &.offline {
+                @include gradient($red, $red-alt, 15%, 70%);
+            }
+            &.denied {
+                @include gradient($yellow, $yellow-alt, 15%, 90%);
+            }
+        }
+
+        .lock-button {
+            height: 80%;
+	        width: 80%;
+	        @include border-radius(50%);
+	        position: absolute;
+	        top: 10%;
+	        bottom: 10%;
+            right: 10%;
+	        left: 10%;
+            background: white;
+
+            ion-icon {
+                font-size: 20vh;
+            }
+            &:hover {
+                background: #eee;
+            }
+            &:active {
+                background: #ddd;
+            }
+	    }
+    }
+
+    .lock-status {
+        color: #555;
+	    font-weight: bold;
+        min-height: 30px;
+    }
+}
