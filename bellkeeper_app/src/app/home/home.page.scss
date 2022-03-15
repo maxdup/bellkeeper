@@ -36,58 +36,65 @@ $red-alt: #cc3020;
 $yellow: #eeee30;
 $yellow-alt: #ffaa55;
 
-@mixin border-radius($value){
-    -webkit-border-radius: $value;
-    -moz-border-radius: $value;
-    border-radius: $value;
+
+@keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(359deg); }
 }
-@mixin anim($animation, $length, $curve, $cycle) {
-    -webkit-animation: $animation $length $curve $cycle;
-    -moz-animation: $animation $length $curve $cycle;
-    -o-animation: $animation $length $curve $cycle;
-    animation: $animation $length $curve $cycle;
-}
-@mixin gradient($from-color, $to-color, $from-key:0%, $to-key:100%, $angle:180deg) {
-    background: mix($from-color, $to-color); /* Fallback */
-    background: -webkit-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
-    background:    -moz-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
-    background:     -ms-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
-    background:      -o-linear-gradient($angle, $from-color $from-key, $to-color $to-key);
-    background:         linear-gradient($angle, $from-color $from-key, $to-color $to-key);
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$from-color}', EndColorStr='#{$to-color}')";
-}
-ion-content {
-    display: block;
-    height: 100%;
-    &.locked {
-        @include gradient(#ff6080, #ffccc8, 0%, 100%, 310deg);
-        background-size: 400% 400%;
-        @include anim(pulse, 0.5s, ease, infinite);
-    }
-    &.unlocked {
-        @include gradient(#70ff88, #70ffdd, 0%, 100%, 310deg);
-        background-size: 400% 400%;
-        @include anim(pulse, 2s, ease, infinite);
-    }
-}
+
 @keyframes pulse {
     0%{ background-position:0% 50% }
     50%{ background-position:100% 50% }
     100%{ background-position:0% 50% }
 }
 
-@keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(359deg);
+@mixin border-radius($value){
+    -webkit-border-radius: $value;
+    -moz-border-radius: $value;
+    border-radius: $value;
+}
+@mixin gradient($from-color, $to-color, $from-key:0%, $to-key:100%, $angle:180deg) {
+    background-image: mix($from-color, $to-color)  !important; /* Fallback */
+    background-image: -webkit-linear-gradient($angle, $from-color $from-key, $to-color $to-key) !important;
+    background-image:    -moz-linear-gradient($angle, $from-color $from-key, $to-color $to-key) !important;
+    background-image:     -ms-linear-gradient($angle, $from-color $from-key, $to-color $to-key) !important;
+    background-image:      -o-linear-gradient($angle, $from-color $from-key, $to-color $to-key) !important;
+    background-image:         linear-gradient($angle, $from-color $from-key, $to-color $to-key) !important;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$from-color}', EndColorStr='#{$to-color}')";
+}
+ion-content {
+    display: block;
+    height: 100%;
+
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        &.locked {
+            @include gradient(#ff6080, #ffccc8, 0%, 100%, 310deg);
+            background-size: 400% 400%;
+            animation: pulse 2s infinite;
+        }
+        &.unlocked {
+            @include gradient(#70ff88, #70ffdd, 0%, 100%, 310deg);
+            background-size: 400% 400%;
+            animation: pulse 2s infinite;
+        }
     }
 }
 
 #lock-screen {
-    margin-top: 15vh;
     text-align: center;
+    max-height: 80vh;
+    left: 0;
+    position: absolute;
+    right: 0;
+    margin: auto;
+    top: 0;
+    bottom: 0;
 
     .lock-message {
         min-height: 70px;
@@ -103,7 +110,6 @@ ion-content {
 	    button {
 	        border-width: 0;
         }
-
 
         .lock-status-ring {
             height: 90%;
@@ -142,6 +148,7 @@ ion-content {
             right: 10%;
 	        left: 10%;
             background: white;
+            outline: none !important;
 
             ion-icon {
                 font-size: 20vh;
@@ -151,6 +158,10 @@ ion-content {
             }
             &:active {
                 background: #ddd;
+                outline: none !important;
+            }
+            &:focus {
+                outline: none !important;
             }
 	    }
     }

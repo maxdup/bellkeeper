@@ -14,7 +14,8 @@
 </ion-header>
 
 <ion-content scroll="false">
-
+  <div class="background" [class]="locked">
+  </div>
   <div id="lock-screen">
     <div class="lock-message">
       <div *ngIf="locked == 'locked'">
@@ -26,11 +27,14 @@
     </div>
 
     <p>"Technology is the key to success"</p>
+
     <div class="lock-container">
       <div class="lock-status-ring" [ngClass]="status"></div>
       <button class="lock-button" (click)="query()">
-        <ion-icon name="lock-closed-outline" *ngIf="locked != 'unlocked'"></ion-icon>
-        <ion-icon name="lock-open-outline" *ngIf="locked == 'unlocked'"></ion-icon>
+        <ion-icon name="lock-closed-outline"
+                  *ngIf="locked != 'unlocked'"></ion-icon>
+        <ion-icon name="lock-open-outline"
+                  *ngIf="locked == 'unlocked'"></ion-icon>
       </button>
     </div>
 
@@ -41,5 +45,4 @@
       <p *ngIf="status == 'denied'">Password was denied</p>
     </div>
   </div>
-
 </ion-content>
